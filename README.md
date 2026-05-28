@@ -22,33 +22,15 @@ npm run dev
 npm run build
 ```
 
-本项目在 `vite.config.ts` 中按命令区分路径：
+本项目在 `vite.config.ts` 中设置了：
 
 ```ts
-base: command === 'build' ? '/job-task/' : '/'
+base: '/job-task/'
 ```
 
-这是为了适配 GitHub Pages 的项目站点路径：`https://<用户名>.github.io/job-task/`。本地开发仍使用 `/`，生产构建使用 `/job-task/`。如果以后仓库名或部署子路径改变，请同步修改 `vite.config.ts` 中的 `base`。
+这是为了适配 GitHub Pages 的项目站点路径：`https://<用户名>.github.io/job-task/`。如果以后仓库名或部署子路径改变，请同步修改 `vite.config.ts` 中的 `base`。
 
-入口路由使用 `BrowserRouter basename={import.meta.env.BASE_URL}`，因此部署到 GitHub Pages 时会按 `/job-task/` 作为应用根路径，避免 React Router 在子路径下无法匹配。
-
-
-## GitHub Pages 自动部署
-
-仓库已包含 `.github/workflows/deploy.yml`。推送到 `main` 分支后，GitHub Actions 会：
-
-1. 安装依赖。
-2. 执行 `npm run build`。
-3. 将 `dist/index.html` 复制为 `dist/404.html`，用于支持直接打开或刷新详情页路由。
-4. 将构建后的 `dist` 发布到 `gh-pages` 分支。
-
-请在 GitHub 仓库的 **Settings → Pages → Build and deployment** 中设置：
-
-- **Source**：Deploy from a branch
-- **Branch**：`gh-pages`
-- **Folder**：`/ (root)`
-
-这样可以避开仓库里 `github-pages` 环境保护规则对 `actions/deploy-pages` 的限制。如果之前选择过 **GitHub Actions**，请改回以上 `gh-pages` 分支部署方式。
+入口路由使用 `BrowserRouter basename={import.meta.env.BASE_URL}`，因此本地开发时会使用 `/`，部署到 GitHub Pages 时会使用 `/job-task/`，避免页面在子路径打开时出现空白。
 
 ## 如何新增一个寺庙节点
 
