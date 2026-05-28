@@ -22,41 +22,15 @@ npm run dev
 npm run build
 ```
 
-本项目在 `vite.config.ts` 中按命令区分路径：
+本项目在 `vite.config.ts` 中设置了：
 
 ```ts
-base: command === 'build' ? '/job-task/' : '/'
+base: '/job-task/'
 ```
 
-这是为了适配 GitHub Pages 的项目站点路径：`https://<用户名>.github.io/job-task/`。本地开发仍使用 `/`，生产构建使用 `/job-task/`。如果以后仓库名或部署子路径改变，请同步修改 `vite.config.ts` 中的 `base`。
+这是为了适配 GitHub Pages 的项目站点路径：`https://<用户名>.github.io/job-task/`。如果以后仓库名或部署子路径改变，请同步修改 `vite.config.ts` 中的 `base`。
 
-入口路由使用 `BrowserRouter basename={import.meta.env.BASE_URL}`，因此部署到 GitHub Pages 时会按 `/job-task/` 作为应用根路径，避免 React Router 在子路径下无法匹配。
-
-
-## GitHub Pages 自动部署
-
-仓库已包含 `.github/workflows/gh-pages.yml`。推送到 `main` 分支后，GitHub Actions 会运行 **Build and publish static site to gh-pages** 工作流：
-
-1. 安装依赖。
-2. 执行 `npm run build`。
-3. 将 `dist/index.html` 复制为 `dist/404.html`，用于支持直接打开或刷新详情页路由。
-4. 将构建后的 `dist` 发布到 `gh-pages` 分支。
-
-请在 GitHub 仓库的 **Settings → Pages → Build and deployment** 中设置：
-
-- **Source**：Deploy from a branch
-- **Branch**：`gh-pages`
-- **Folder**：`/ (root)`
-
-这样可以避开仓库里 `github-pages` 环境保护规则对 `actions/deploy-pages` 的限制。如果之前选择过 **GitHub Actions**，请改回以上 `gh-pages` 分支部署方式。
-
-### 如果仍看到 “Branch main is not allowed to deploy to github-pages”
-
-这说明你正在重跑旧的 `actions/deploy-pages` 工作流，或者 GitHub Pages 仍被设置为 **GitHub Actions** 部署源。请不要点击旧失败记录右上角的 **Re-run jobs**；应当推送/合并最新提交，让新的 **Build and publish static site to gh-pages** 工作流重新触发。新的工作流文件名是 `gh-pages.yml`，页面里只会看到一个 job：`publish-static-site`，不会再出现旧 `deploy.yml` 里的 `build` / `deploy` 两个 job。
-
-### 如果 Actions 里仍然出现 deploy.yml
-
-本仓库已经删除 `.github/workflows/deploy.yml`，改用 `.github/workflows/gh-pages.yml`。如果 GitHub Actions 页面标题仍是 `deploy.yml`，说明运行的不是最新提交中的 workflow。请确认 PR 已合并到 `main`，或在最新提交页面手动运行 **Build and publish static site to gh-pages**。
+入口路由使用 `BrowserRouter basename={import.meta.env.BASE_URL}`，因此本地开发时会使用 `/`，部署到 GitHub Pages 时会使用 `/job-task/`，避免页面在子路径打开时出现空白。
 
 ## 如何新增一个寺庙节点
 
