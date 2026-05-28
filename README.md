@@ -16,6 +16,22 @@ npm run dev
 
 默认访问：`http://localhost:5173`
 
+## 构建与 GitHub Pages 部署说明
+
+```bash
+npm run build
+```
+
+本项目在 `vite.config.ts` 中设置了：
+
+```ts
+base: '/job-task/'
+```
+
+这是为了适配 GitHub Pages 的项目站点路径：`https://<用户名>.github.io/job-task/`。如果以后仓库名或部署子路径改变，请同步修改 `vite.config.ts` 中的 `base`。
+
+入口路由使用 `BrowserRouter basename={import.meta.env.BASE_URL}`，因此本地开发时会使用 `/`，部署到 GitHub Pages 时会使用 `/job-task/`，避免页面在子路径打开时出现空白。
+
 ## 如何新增一个寺庙节点
 
 1. 打开 `src/data/temples.ts`。
@@ -39,6 +55,7 @@ npm run dev
    ```ts
    conceptImage: '/images/yongning.jpg'
    ```
+   组件会自动结合 Vite 的 `BASE_URL` 处理部署子路径；部署到 GitHub Pages 项目站点时，不需要手动给图片路径添加 `/job-task/` 前缀。
 3. 若不填写 `conceptImage`，页面会自动显示 CSS 占位概念图卡片。
 
 ## 如何修改原文与注释

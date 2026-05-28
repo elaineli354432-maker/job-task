@@ -6,7 +6,11 @@ type Props = {
 
 function TempleConceptImage({ temple }: Props) {
   if (temple.conceptImage) {
-    return <img src={temple.conceptImage} alt={`${temple.name}概念图`} className="h-[420px] w-full rounded-2xl border border-border object-cover" />;
+    const imageSrc = temple.conceptImage.startsWith('/')
+      ? `${import.meta.env.BASE_URL}${temple.conceptImage.replace(/^\/+/, '')}`
+      : temple.conceptImage;
+
+    return <img src={imageSrc} alt={`${temple.name}概念图`} className="h-[420px] w-full rounded-2xl border border-border object-cover" />;
   }
 
   return (
