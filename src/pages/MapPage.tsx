@@ -30,12 +30,6 @@ function MapPage() {
     setSelectedLocation(location);
   };
 
-  const handleReset = () => {
-    setSelectedType('全部');
-    setQuery('');
-    setSelectedLocation(undefined);
-  };
-
   return (
     <>
       <Header />
@@ -56,12 +50,8 @@ function MapPage() {
           <LocationFilterPanel
             selectedType={selectedType}
             query={query}
-            locations={filteredLocations}
-            selectedId={selectedLocation?.id}
             onTypeChange={setSelectedType}
             onQueryChange={setQuery}
-            onSelect={handleSelect}
-            onReset={handleReset}
           />
           <InteractiveLuoyangMap
             locations={filteredLocations}
